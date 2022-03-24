@@ -7,11 +7,14 @@ const getRoot = async (request, response) => {
 }
 
 const getNodeStatus = async(request, response) => {
+
+    console.log("Request for NodeStatus started...")
     const client = new Net.Socket();
 
     client.connect({port: NodePort, NodeHost: host}, function() {
         console.log("TCP connection established");
         client.write("NODESTATUS\n");
+        response.status(200).send("Connection was opened");
     });
 
     client.on("data", function(chunk){
