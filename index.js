@@ -1,14 +1,11 @@
 const express = require('express');
 const app = express();
 const api = require('./api');
-
-const localPort = 80;
-const NodePort = 8080;
-const NodeHost = '192.210.226.118';
+const localPort = process.env.PORT || 5000
 
 app.use(express.json());
 app.listen(localPort, () => {
-    console.log("API translator running...");
+    console.log(`API translator (${localPort}) running...`);
 });
 
 
