@@ -35,7 +35,7 @@ const SyncNodes = async() => {
     });
 }
 
-function Concensus (){
+function Consensus (){
     let arrT = [];
     let CTime = 0;
     let CBlock = 0;
@@ -169,7 +169,7 @@ const getTCPNodeStatus = (host, port = 8080) => {
         client.end();
         client.destroy();
         pendingNodes--;
-        if(pendingNodes == 0) Concensus();
+        if(pendingNodes == 0) Consensus();
     })
     
     client.connect({port: port, host: host}, function() {
@@ -188,12 +188,12 @@ const getTCPNodeStatus = (host, port = 8080) => {
         lastNodeStatus = data.toString();
         nodeResults.push(stringToNodeInfo(data.toString(), host, port));
         pendingNodes--;
-        if(pendingNodes == 0) Concensus();
+        if(pendingNodes == 0) Consensus();
         client.destroy();
     });
 }
 
-const getLastConcensus = async(request, response) => {
+const getLastConsensus = async(request, response) => {
     let result = {
         LastBlock: LastBlock,
         LastBranch: LastBranch,
@@ -204,9 +204,9 @@ const getLastConcensus = async(request, response) => {
 
 const getTCPPendings = async(host, port = 8080, CPending) => {
     console.log(`Requesting Pendings to: ${host}:${port}`);
+    
     const client = new Net.Socket();
     let data;
-    console.log(`Requesting pendings to ${host}:${port}`);
     client.connect({port: port, host: host}, function() {
         client.write("NSLPEND\n");
     });
@@ -270,7 +270,7 @@ const getSummary = async(request, response) => {
 
 module.exports = {
     getRoot,
-    getLastConcensus,
+    getLastConsensus,
     getPendings,
     getSummary,
     SyncNodes
