@@ -1,18 +1,17 @@
-const Net = require('net');
+const express = require('express');
+const app = express();
+const api = require('./api');
 
-const port = 8080;
-const host = '192.210.226.118';
+const localPort = 80;
+const NodePort = 8080;
+const NodeHost = '192.210.226.118';
 
-
-
-const client = new Net.Socket();
-
-client.connect({port: port, host: host}, function() {
-    console.log("TCP connection established");
-    client.write("NODESTATUS\n");
+app.use(express.json());
+app.listen(localPort, () => {
+    console.log("API translator running...");
 });
 
-client.on("data", function(chunk){
-    console.log("Data its been retrieved from host: ",chunk.toString());
-    client.end;
-});
+
+app.get('/', api.getRoot);
+app.get('/NodeStatus', api.getNodeStatus);
+
