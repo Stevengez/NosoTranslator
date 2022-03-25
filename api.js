@@ -185,11 +185,13 @@ const getTCPNodeStatus = (host, port = 8080) => {
     });
 
     client.on("end", function(){
-        lastNodeStatus = data.toString();
-        nodeResults.push(stringToNodeInfo(data.toString(), host, port));
         pendingNodes--;
-        if(pendingNodes == 0) Consensus();
-        client.destroy();
+        if(data != undefined){
+            lastNodeStatus = data.toString();
+            nodeResults.push(stringToNodeInfo(data.toString(), host, port));
+            if(pendingNodes == 0) Consensus();
+            client.destroy();
+        }
     });
 }
 
