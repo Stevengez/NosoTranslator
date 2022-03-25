@@ -42,7 +42,6 @@ function Consensus (){
     let CBranch = 0;
     let CPending = 0;
 
-
     // Concensus of unix time
     for(node of nodeResults){
         addValue(node.utctime, arrT);
@@ -256,6 +255,9 @@ const getTCPSummary = async(host, port = 8080, CBlock, CBranch) => {
         LastSummary = data;
         LastBlock = CBlock;
         LastBranch = CBranch;
+        console.log("Summary Retrieved - OK");
+        console.log(`Current Block ${LastBlock} <- ${CBlock} `);
+        console.log(`Current Branch ${LastBranch} <- ${CBranch} `);
     });
 }
 
