@@ -30,6 +30,7 @@ const getRoot = async (request, response) => {
 
 const SyncNodes = async() => {
     pendingNodes = seedNodes.length;
+    nodeResults = [];
     seedNodes.forEach((node) => {
         getTCPNodeStatus(node);
     });
