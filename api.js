@@ -256,9 +256,6 @@ const getTCPSummary = async(host, port = 8080, CBlock, CBranch) => {
         LastSummary = data;
         LastBlock = CBlock;
         LastBranch = CBranch;
-        console.log("Summary Retrieved - OK");
-        console.log(`Current Block ${LastBlock} <- ${CBlock} `);
-        console.log(`Current Branch ${LastBranch} <- ${CBranch} `);
     });
 }
 
