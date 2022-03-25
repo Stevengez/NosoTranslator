@@ -12,7 +12,7 @@ app.listen(localPort, () => {
 
 
 app.get('/', api.getRoot);
-app.get('/Concensus', api.getLastConsensus);
+app.get('/Consensus', api.getLastConsensus);
 app.get('/Summary', api.getSummary);
 
 api.SyncNodes();
