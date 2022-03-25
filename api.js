@@ -83,7 +83,7 @@ function Consensus (){
         getTCPSummary(selectedNode.address,selectedNode.port, CBlock, CBranch);
     }
 
-    if(CPending > LastPendingCount){
+    if(CPending != LastPendingCount){
         getTCPPendings(selectedNode.address, selectedNode.port, CPending);
     }
 }
