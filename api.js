@@ -73,7 +73,7 @@ function Consensus (){
     let selectedNode = getRandomServer(CBlock, CBranch, CPending);
 
     // console.log(" ");
-    // console.log("# Concensus Completed: ")
+    // console.log("# Consensus Completed: ")
     // console.log("# Time: ",CTime);
     // console.log("# Block: ",CBlock);
     // console.log("# Branch: ",CBranch);
@@ -205,7 +205,7 @@ const getLastConsensus = async(request, response) => {
 }
 
 const getTCPPendings = async(host, port = 8080, CPending) => {
-    console.log(`Requesting Pendings to: ${host}:${port}`);
+    //console.log(`Requesting Pendings to: ${host}:${port}`);
     
     const client = new Net.Socket();
     let data;
@@ -237,7 +237,7 @@ const getPendings = async(request, response) => {
 }
 
 const getTCPSummary = async(host, port = 8080, CBlock, CBranch) => {
-    console.log(`Requesting Summary to: ${host}:${port}`);
+    //console.log(`Requesting Summary to: ${host}:${port}`);
     const client = new Net.Socket();
     let data;
     client.connect({port: port, host: host}, function() {
