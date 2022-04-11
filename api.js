@@ -72,13 +72,6 @@ function Consensus (){
 
     let selectedNode = getRandomServer(CBlock, CBranch, CPending);
 
-    console.log(" ");
-    console.log("# Concensus Completed: ")
-    console.log("# Time: ",CTime);
-    console.log("# Block: ",CBlock);
-    console.log("# Branch: ",CBranch);
-    console.log("# Pendings: ",CPending);
-
     if(CBlock > LastBlock){
         getTCPSummary(selectedNode.address,selectedNode.port, CBlock, CBranch);
     }
