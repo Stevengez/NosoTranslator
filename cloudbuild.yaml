@@ -1,7 +1,7 @@
 steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t','gcr.io/noso-translator/nosotranslator','-f','dockerfile']
+  args: [build,-t,gcr.io/noso-translator/nosotranslator]
 # Push to the container registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push','gcr.io/noso-translator/nosotranslator']
