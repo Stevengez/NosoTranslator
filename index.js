@@ -14,6 +14,7 @@ app.listen(localPort, () => {
 app.get('/', api.getRoot);
 app.get('/Consensus', api.getLastConsensus);
 app.get('/Summary', api.getSummary);
+app.post('/SendOrder', api.postOrder);
 
 api.SyncNodes();
 setInterval(api.SyncNodes, 10000);

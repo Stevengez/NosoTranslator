@@ -14,6 +14,8 @@ var LastPendings = "";
 var pendingNodes = 0;
 var nodeResults = [];
 
+var randomServer = undefined;
+
 const seedNodes = [
     "192.210.226.118",
     "45.146.252.103",
@@ -70,7 +72,7 @@ function Consensus (){
     }
     CPending = getHighest(arrT);
 
-    let selectedNode = getRandomServer(CBlock, CBranch, CPending);
+    randomServer = getRandomServer(CBlock, CBranch, CPending);
 
     // console.log(" ");
     // console.log("# Consensus Completed: ")
@@ -80,11 +82,11 @@ function Consensus (){
     // console.log("# Pendings: ",CPending);
 
     if(CBlock > LastBlock){
-        getTCPSummary(selectedNode.address,selectedNode.port, CBlock, CBranch);
+        getTCPSummary(randomServer.address,randomServer.port, CBlock, CBranch);
     }
 
     if(CPending != LastPendingCount){
-        getTCPPendings(selectedNode.address, selectedNode.port, CPending);
+        getTCPPendings(randomServer.address, randomServer.port, CPending);
     }
 }
 
@@ -236,6 +238,19 @@ const getPendings = async(request, response) => {
     return response.status(200).send(lastPendings);
 }
 
+const testZip = async (CBlock, CBranch, data) => {
+    try{
+        const zip = await Zip.loadAsync(data);
+        LastSummary = data;
+        LastBlock = CBlock;
+        LastBranch = CBranch;
+        console.log("Summary zip checked- OK");
+    }catch(err){
+        console.log("Summary Zip test failed, requesting again...");
+        getTCPSummary(randomServer.address, randomServer.port, CBlock, CBranch);
+    }
+}
+
 const getTCPSummary = async(host, port = 8080, CBlock, CBranch) => {
     //console.log(`Requesting Summary to: ${host}:${port}`);
     const client = new Net.Socket();
@@ -255,12 +270,9 @@ const getTCPSummary = async(host, port = 8080, CBlock, CBranch) => {
     });
     
     client.on("end", function(){
-        LastSummary = data;
-        LastBlock = CBlock;
-        LastBranch = CBranch;
+        testZip(CBlock, CBranch, data);
     });
 }
-
 
 const getSummary = async(request, response) => {
     response.set({
@@ -270,10 +282,58 @@ const getSummary = async(request, response) => {
     return response.status(200).send(LastSummary);
 }
 
+const postOrder = async(request, response) => {
+    const {orderString} = request.body;
+    const client = new Net.Socket();
+    let data;
+
+    console.log(request.body);
+
+    client.setTimeout(1500, () => {
+        response.status(200).send({
+            error: "Try again later..."
+        });
+        client.end();
+        client.destroy();
+        return;
+    })
+    
+    client.connect({port: randomServer.port, host: randomServer.address}, function() {
+        client.write(orderString+"\n");
+    });
+
+    client.on("data", function(chunk){
+        console.log("Received: ",chunk.toString());
+        if(data != undefined){
+            data = Buffer.concat([data, chunk]);
+        }else{
+            data = chunk;
+        }
+    });
+
+    client.on("end", function(){
+        if(data != undefined){
+            console.log("Sending response: ",data.toString());
+            return response.status(200).send({
+                orderResult: data.toString()
+            });
+        }
+
+        return response.status(200).send({
+            orderResult: "error"
+        });
+    });
+
+    client.on("error", function(err){
+        console.log("Error sending the order: ",err);
+    });
+}
+
 module.exports = {
     getRoot,
     getLastConsensus,
     getPendings,
     getSummary,
-    SyncNodes
+    SyncNodes,
+    postOrder
 }
