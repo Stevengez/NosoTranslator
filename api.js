@@ -303,7 +303,6 @@ const postOrder = async(request, response) => {
     });
 
     client.on("data", function(chunk){
-        console.log("Received: ",chunk.toString());
         if(data != undefined){
             data = Buffer.concat([data, chunk]);
         }else{
@@ -313,7 +312,6 @@ const postOrder = async(request, response) => {
 
     client.on("end", function(){
         if(data != undefined){
-            console.log("Sending response: ",data.toString());
             return response.status(200).send({
                 orderResult: data.toString()
             });
