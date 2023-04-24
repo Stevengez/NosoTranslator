@@ -1,0 +1,12 @@
+FROM node:17-alpine3.14
+WORKDIR /
+COPY . .
+RUN npm install
+ENV PORT 80
+ENV MONGO_API_HOST localhost
+ENV MONGO_API_PORT 27017
+ENV MONGO_API_USER noso
+ENV MONGO_API_PWD Nosodb850
+ENV MONGO_API_DB nosohistory
+EXPOSE 80
+CMD ["node","index.js"]
