@@ -35,13 +35,10 @@ const verifyToken = (req, res, next) => {
         const now = Math.floor(Date.now()/1000);
         const generatedToken = Buffer.from(now+process.env.REACT_APP_API_TOKEN).toString('base64');
 
-        console.log("Received: ", token);
-        console.log("Now: ", now);
-        console.log("Generated: ", generatedToken);
-
         if(token === generatedToken){
             next();
-        }else{
+        }else{            
+            console.log("R: ", token, "G: ", generatedToken);
             return res.status(403).send({ isError: true, result: 'Cors Origin Validation Failed.' });
         }
     } catch (error) {
