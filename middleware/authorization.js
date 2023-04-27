@@ -32,9 +32,9 @@ const verifyToken = (req, res, next) => {
     }
   
     try {
-        const now = Date.now()/1000;
+        const now = Math.floor(Date.now()/1000);
         const generatedToken = Buffer.from(now+process.env.REACT_APP_API_TOKEN).toString('base64');
-        
+
         console.log("Received: ", token);
         console.log("Now: ", now);
         console.log("Generated: ", generatedToken);
