@@ -32,11 +32,18 @@ const verifyToken = (req, res, next) => {
     }
   
     try {
-      if(token === process.env.REACT_APP_API_TOKEN){
-        next();
-      }else{
-        return res.status(403).send({ isError: true, result: 'Cors Origin Validation Failed.' });
-      }
+        const now = Date.now()/1000;
+        const generatedToken = Buffer.from(now+process.env.REACT_APP_API_TOKEN).toString('base64');
+        
+        console.log("Received: ", token);
+        console.log("Now: ", now);
+        console.log("Generated: ", generatedToken);
+
+        if(token === generatedToken){
+            next();
+        }else{
+            return res.status(403).send({ isError: true, result: 'Cors Origin Validation Failed.' });
+        }
     } catch (error) {
         return res.status(403).send({ isError: true, result: 'Cors Origin Validation Failed.' });
     }

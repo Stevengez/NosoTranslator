@@ -18,7 +18,7 @@ const corsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
-app.use(verifyOrigin);
+//app.use(verifyOrigin);
 app.use(verifyToken);
 app.use(express.json());
 app.use('/', routes);
