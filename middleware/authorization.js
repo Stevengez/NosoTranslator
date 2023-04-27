@@ -1,3 +1,4 @@
+const { prepareBase64 } = require('./secure');
 const originsArray = process.env.ORIGIN_ARRAY.split(" ");
 
 const verifyReferer = (req, res, next) => {
@@ -32,8 +33,7 @@ const verifyToken = (req, res, next) => {
     }
   
     try {
-        const now = Math.floor(Date.now()/1000);
-        const generatedToken = Buffer.from(now+process.env.REACT_APP_API_TOKEN).toString('base64');
+        const generatedToken = prepareBase64();
 
         if(token === generatedToken){
             next();
