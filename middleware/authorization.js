@@ -1,4 +1,4 @@
-const originsArray = ['https://www.7software.dev'];
+const originsArray = process.env.ORIGIN_ARRAY.split(" ");
 
 const verifyReferer = (req, res, next) => {
     const referer = req.headers.referer || req.headers.referrer;
