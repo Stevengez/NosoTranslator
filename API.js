@@ -8,10 +8,18 @@ const app = express();
 const bodyParser = require('body-parser')
 const routes = require('./routes')();
 const securePort = process.env.PORT || 8080;
+const { verifyToken, verifyOrigin, originsArray } = require('./middleware/authorization');
 const { SyncCycle } = require('./service/NosoProtocol');
 
+const corsOptions = {
+    origin: originsArray,
+    methods: ['POST']
+}
+
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
+app.use(verifyOrigin);
+app.use(verifyToken);
 app.use(express.json());
 app.use('/', routes);
 
